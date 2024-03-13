@@ -20,7 +20,7 @@ params = {
 }
 
 
-lista_de_musicas = []
+music_list = []
 
 while True:
     
@@ -36,8 +36,13 @@ while True:
           
             for track in data["toptracks"]["track"]:
                
-                lista_de_musicas.append(track["name"])
-        print("passou toptrack")
+                music_name = track["name"]
+                artist_name = track["artist"]["name"]
+                playcount = track["playcount"]
+                rank = track["@attr"]["rank"]
+
+                music_list.append(f'{rank} - {music_name} by {artist_name} - playcount: {playcount}')
+      
        
         if "toptracks" in data and "@attr" in data["toptracks"] and "page" in data["toptracks"]["@attr"]:
             current_page = int(data["toptracks"]["@attr"]["page"])
@@ -51,15 +56,15 @@ while True:
             break 
     else:
         
-        print("Erro ao obter os dados da API:", response.status_code)
+        print("Error obtaining API data:", response.status_code)
         break
 
-caminho_arquivo = "lista_de_musicas.txt"
+file_path = "lastfm_toptracks.txt"
 
 
-with open(caminho_arquivo, "w", encoding="utf-8") as arquivo:
+with open(file_path, "w", encoding="utf-8") as file:
    
-    for musica in lista_de_musicas:
-        arquivo.write(f"{musica}\n")
+    for music in music_list:
+        file.write(f"{music}\n")
 
-print("Lista de músicas gravada em", caminho_arquivo)
+print("File saved in:", file_path)
